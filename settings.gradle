@@ -1,0 +1,3 @@
+rootProject.name = 'extensioneer'
+include ":core"
+
