@@ -1,6 +1,5 @@
 package extensioneer.files
 
-
 import extensioneer.notNull
 import java.io.File
 import java.io.InputStream
