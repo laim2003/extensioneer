@@ -1,3 +1,6 @@
 rootProject.name = 'extensioneer'
 include ":core"
 include ":files"
+include ":intellij-ext"
+include 'intellij-plugin'
+

@@ -1,0 +1,28 @@
+<idea-plugin>
+    <id>com.github.laim2003.euphory.tools.extensioneer.intellij-plugin</id>
+    <name>Extensioneer</name>
+    <vendor email="l.fab1306@gmail.com" url="http://laim2003.github.io">Euphory by Lukas Faber</vendor>
+
+    <description><![CDATA[
+    IntelliJ plugin for the extensioneer library<br>
+    ]]></description>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <!-- uncomment to enable plugin in all products
+    <depends>com.intellij.modules.lang</depends>
+    -->
+
+    <extensions defaultExtensionNs="com.intellij">
+        <moduleType id="gradle" implementationClass="modules.ExtensioneerModule"/>
+    </extensions>
+    <actions>
+        <!-- Add your actions here -->
+        <group id="Modules" text="Modules" description="Extensioneer Module setup group">
+            <add-to-group group-id="NewGroup" anchor="first"/>
+            <action id="addExtModule" class="AddExtensioneerModule" popup="true" text="Add Extensioneer Module"
+                    description="Add a new module to your project using the extensioneer setup">
+            </action>
+        </group>
+    </actions>
+</idea-plugin>
