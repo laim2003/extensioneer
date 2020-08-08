@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="extensioneer.intellij-ext:Plugin:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/extensioneer_intellij_ext_Plugin_jar</output-path>
-    <root id="archive" name="extensioneer.intellij-ext.jar">
-      <element id="module-output" name="extensioneer.intellij-ext.main" />
-    </root>
-  </artifact>
-</component>

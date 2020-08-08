@@ -1,0 +1,17 @@
+task writeNewPom {
+    doLast {
+        pom {
+            setArtifactId(project.name)
+            project {
+                inceptionYear '2020'
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        distribution 'repo'
+                    }
+                }
+            }
+        }.writeTo(projectDir.path + File.separator + "pom.xml")
+    }
+}
