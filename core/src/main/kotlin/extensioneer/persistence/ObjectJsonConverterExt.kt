@@ -17,9 +17,10 @@ class TestClass {
     var list2 = listOf(String(), String())
     var map = mapOf("o" to 2)
     var sub = SubClass()
+    var subss = SubClass()
 }
 class SubClass {
-    var list = arrayOf("ddod","fdfs")
+    var list = null
 }
 
 @ExperimentalStdlibApi
@@ -44,11 +45,11 @@ private fun Any.generateClassJSON(): JSONObject {
             &&!propertyReturnType.isSubtypeOf(typeOf<Array<*>>())
             &&!propertyReturnType.isSubtypeOf(typeOf<Map<*, *>>())) {
             println("field is not a collection")
-            it.isNull {
+            it.getter.call(this).isNull {
                 classJSON.put(it.name, "null")
             }.notNull {
-                println(getter.call(this@generateClassJSON))
-                classJSON.put(it.name, getter.call(this@generateClassJSON)!!.generateClassJSON())
+                println(this)
+                classJSON.put(it.name, this.generateClassJSON())
             }
         } else {
             classJSON.put(it.name, it.getter.call(this))
