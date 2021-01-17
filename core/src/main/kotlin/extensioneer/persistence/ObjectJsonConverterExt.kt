@@ -2,14 +2,14 @@ package extensioneer.persistence
 
 import extensioneer.isNull
 import extensioneer.notNull
+import extensioneer.org.json.forEach
 import org.json.JSONArray
 import org.json.JSONObject
-import kotlin.reflect.KClass
-import kotlin.reflect.KType
-import kotlin.reflect.full.createType
+import java.lang.RuntimeException
 import kotlin.reflect.full.isSubtypeOf
 import kotlin.reflect.full.memberProperties
-import kotlin.reflect.jvm.internal.impl.load.kotlin.JvmType
+import kotlin.reflect.jvm.javaField
+import kotlin.reflect.jvm.javaType
 import kotlin.reflect.typeOf
 
 class TestClass {
@@ -23,6 +23,10 @@ class SubClass {
     var list = null
     var name = "dfsdd"
     val sss = 0x003
+    val innererSubClass = innererSubClass()
+}
+class innererSubClass {
+    var lslls = "sdjfkskldfj"
 }
 
 @ExperimentalStdlibApi
@@ -32,11 +36,11 @@ fun main() {
 }
 @ExperimentalStdlibApi
 fun Any.convertToJsonObject(): JSONObject {
-    return generateClassJSON()
+    return writeClassToJson()
 }
 
 @ExperimentalStdlibApi
-private fun Any.generateClassJSON(): JSONObject {
+private fun Any.writeClassToJson(): JSONObject {
     val classJSON = JSONObject()
     val objectProperties = this::class.memberProperties
 
@@ -56,17 +60,31 @@ private fun Any.generateClassJSON(): JSONObject {
             &&!propertyReturnType.isSubtypeOf(typeOf<Double>())
             &&!propertyReturnType.isSubtypeOf(typeOf<Boolean>())) {
             println("field is not a collection")
-            it.getter.call(this).isNull {
-                classJSON.put(it.name, "null")
-            }.notNull {
-                println(this)
-                classJSON.put(it.name, this.generateClassJSON())
+            if(it.returnType.javaType.typeName == "java.lang.Void"|| it.getter.call(this) == null) {
+                classJSON.put(it.name, mapOf("class" to it.returnType.javaType.typeName, "value" to "null"))
+            } else {
+                val value = it.getter.call(this)
+                classJSON.put(it.name, mapOf("class" to it.returnType.javaType.typeName, "value" to value!!.writeClassToJson()))
             }
         } else {
             classJSON.put(it.name, it.getter.call(this))
         }
     }
     return classJSON
+}
+
+@Throws(RuntimeException::class)
+inline fun <reified returnType> String.readJsonToClass(): returnType {
+    val returnClass = returnType::class.java
+    val classJson = JSONObject(this)
+    classJson.forEach {
+        val value = it.second
+        if (value is JSONObject) {
+
+        }
+        returnClass.getField(it.first).set(this, it.second)
+    }
+    return returnClass.getDeclaredConstructor().newInstance()
 }
 
 fun <T> Array<T>.generateJsonArray(): JSONArray {
