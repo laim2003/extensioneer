@@ -21,6 +21,8 @@ class TestClass {
 }
 class SubClass {
     var list = null
+    var name = "dfsdd"
+    val sss = 0x003
 }
 
 @ExperimentalStdlibApi
@@ -43,7 +45,16 @@ private fun Any.generateClassJSON(): JSONObject {
         println(propertyReturnType)
         if(!propertyReturnType.isSubtypeOf(typeOf<Collection<*>>())
             &&!propertyReturnType.isSubtypeOf(typeOf<Array<*>>())
-            &&!propertyReturnType.isSubtypeOf(typeOf<Map<*, *>>())) {
+            &&!propertyReturnType.isSubtypeOf(typeOf<Map<*, *>>())
+            &&!propertyReturnType.isSubtypeOf(typeOf<String>())
+            &&!propertyReturnType.isSubtypeOf(typeOf<Int>())
+            &&!propertyReturnType.isSubtypeOf(typeOf<Number>())
+            &&!propertyReturnType.isSubtypeOf(typeOf<Char>())
+            &&!propertyReturnType.isSubtypeOf(typeOf<Short>())
+            &&!propertyReturnType.isSubtypeOf(typeOf<Long>())
+            &&!propertyReturnType.isSubtypeOf(typeOf<Float>())
+            &&!propertyReturnType.isSubtypeOf(typeOf<Double>())
+            &&!propertyReturnType.isSubtypeOf(typeOf<Boolean>())) {
             println("field is not a collection")
             it.getter.call(this).isNull {
                 classJSON.put(it.name, "null")
